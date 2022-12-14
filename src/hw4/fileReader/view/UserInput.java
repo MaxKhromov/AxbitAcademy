@@ -1,28 +1,28 @@
 package hw4.fileReader.view;
 
-import hw4.fileReader.controller.FileParcer;
+import hw4.fileReader.utils.FileParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserInput {
-    public void UserInput() {
+    public UserInput() {
     }
 
     public String readString(String title) {
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object
         System.out.println(title);
-        String userString = scanner.nextLine();  // Read user input
-        return userString;
+        return scanner.nextLine();
     }
 
-    public List<List<String>> readCSV() {
-        Scanner file = new Scanner(new File("book.csv");
-        FileParcer filePracer = new FileParcer(file);
-        List<List<String>> fileAsStrings = filePracer.parceCSV();
+    public List<List<String>> readCSV(String title) throws FileNotFoundException {
+        String userFilePath = readString(title);  // Read user input
+
+        Scanner file = new Scanner(new File(userFilePath));
+        FileParser fileParser = new FileParser(file);
+        return fileParser.parseCSV();
     }
 
 }
