@@ -25,4 +25,8 @@ public class UserInput {
         return fileParser.parseCSV();
     }
 
+    public void startUI() {
+
+    }
+
 }
