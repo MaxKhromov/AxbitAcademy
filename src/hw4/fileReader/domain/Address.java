@@ -39,6 +39,10 @@ public class Address {
         }
     }
 
+//    public int sortBy(Address o) {
+//
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
