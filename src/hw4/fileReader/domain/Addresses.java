@@ -42,9 +42,9 @@ public class Addresses {
     public void sortBy(String sortParameter, String direction) {
 
         if (sortParameter.equals(AddressSortParamEnum.valueOf("FLAT").sortParam)) {
-            sortWithDirection(direction, Comparator.comparing(Address::getFlat));
+            sortWithDirection(direction, new AddressComparator.AddressComparatorByFlat());
         } else if (sortParameter.equals(AddressSortParamEnum.valueOf("HOUSE").sortParam)) {
-            sortWithDirection(direction, Comparator.comparing(Address::getHouse));
+            sortWithDirection(direction, new AddressComparator.AddressComparatorByHouse());
         } else {
             throw new RuntimeException("No such sort param: '" + sortParameter + "' Available: " + AddressSortParamEnum.valueOf("FLAT").sortParam + ", " + AddressSortParamEnum.valueOf("HOUSE").sortParam);
         }
