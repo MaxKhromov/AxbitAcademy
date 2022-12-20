@@ -8,8 +8,6 @@ public class UserInterface {
         UserInput keyBoard = new UserInput();
         String orderNumberStr = keyBoard.readString("Введите номер заказа: ");
         Palindrome palindrome = new Palindrome(orderNumberStr);
-        System.out.println("Необходимо подождать " + palindrome.calculateNumberOfOrdersToWait() + " заказов");
+        System.out.println("Для числа '" + palindrome.getOriginalString() + "' ближайший полиндром это '" + palindrome.getClosestPalindrome() + "'. Необходимо подождать '" + palindrome.getOrdersNumberToWait() + "' заказов.");
     }
-
-
 }

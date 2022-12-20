@@ -1,40 +1,21 @@
 package hw4.palindrome.domain;
 
+import java.util.Arrays;
+import java.util.List;
+
+
 public class Palindrome {
-    public String originalString;
-    public String lastIterationString;
-    public Integer ordersNumberToWait;
+    private final String originalString;
+    private String closestPalindrome;
+    private Integer ordersNumberToWait;
+    private Boolean palindromeIsFound;
 
     public Palindrome(String originalString) {
         this.originalString = originalString;
-        this.lastIterationString = originalString;
+        this.closestPalindrome = originalString;
         this.ordersNumberToWait = 0;
-    }
-
-    public Integer calculateNumberOfOrdersToWait() {
-
-        if (checkFormat(this.lastIterationString)) {
-            String orderNumberStrPart1 = this.lastIterationString.substring(0, this.lastIterationString.length() / 2);
-            String orderNumberStrPart2 = this.lastIterationString.substring(this.lastIterationString.length() - orderNumberStrPart1.length());
-
-            String expectedStrPart2 = reverseString(orderNumberStrPart1);
-
-            //System.out.println(orderNumberStrPart1 + " - " + orderNumberStrPart2 + " - " + expectedStrPart2);
-
-            Integer orderNumberIntPart2 = Integer.parseInt(orderNumberStrPart2);
-            Integer expectedIntPart2 = Integer.parseInt(expectedStrPart2);
-
-            if (expectedIntPart2 > orderNumberIntPart2) {
-                this.ordersNumberToWait = this.ordersNumberToWait + (expectedIntPart2 - orderNumberIntPart2);
-                return this.ordersNumberToWait;
-            } else {
-                int num = (int) Math.pow(10, orderNumberStrPart2.length());
-                this.lastIterationString = Integer.toString(Integer.parseInt(this.lastIterationString) + num);
-                this.ordersNumberToWait = this.ordersNumberToWait + num;
-                this.calculateNumberOfOrdersToWait();
-            }
-        }
-        return this.ordersNumberToWait;
+        this.palindromeIsFound = false;
+        calculateNumberOfOrdersToWait();
     }
 
     private static boolean checkFormat(String orderNumberStr) {
@@ -65,9 +46,48 @@ public class Palindrome {
             return checkPalindrome(str.substring(1, str.length() - 1));
     }
 
-    private static String reverseString(String str) {
-        StringBuilder sb = new StringBuilder(str);
-        sb.reverse();
-        return sb.toString();
+    public void calculateNumberOfOrdersToWait() {
+
+        if (checkFormat(this.closestPalindrome)) {
+            findPalindrome();
+            this.ordersNumberToWait = Integer.parseInt(this.closestPalindrome) - Integer.parseInt(this.originalString);
+        } else {
+            this.palindromeIsFound = true;
+        }
+    }
+
+    private void findPalindrome() {
+        int originalNumber = Integer.parseInt(this.closestPalindrome);
+        if (!this.palindromeIsFound) {
+            List<String> listOfDigits = Arrays.asList(this.closestPalindrome.split(""));
+            for (int i = 0; i < listOfDigits.size(); i++) {
+                if (this.palindromeIsFound) return;
+                int firstDigit = Integer.parseInt(listOfDigits.get(i));
+                int secondDigit = Integer.parseInt(listOfDigits.get(listOfDigits.size() - i - 1));
+                int difference;
+                if (firstDigit != secondDigit && (listOfDigits.size() - i - 1) > i) {
+                    if (firstDigit > secondDigit) {
+                        difference = firstDigit - secondDigit;
+                    } else {
+                        difference = firstDigit + 10 - secondDigit;
+                    }
+                    this.closestPalindrome = String.valueOf(originalNumber + difference * (int) Math.pow(10, i));
+                    findPalindrome();
+                }
+            }
+            this.palindromeIsFound = true;
+        }
+    }
+
+    public String getOriginalString() {
+        return originalString;
+    }
+
+    public String getClosestPalindrome() {
+        return closestPalindrome;
+    }
+
+    public Integer getOrdersNumberToWait() {
+        return ordersNumberToWait;
     }
 }
